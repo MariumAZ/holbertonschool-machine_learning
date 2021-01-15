@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+""" the first neuron class file Neuron"""
 import numpy as np
 
 class Neuron:
@@ -36,6 +37,6 @@ class Neuron:
         update private attribute __A using sigmoid activation function
         return private instance attribute __A
         """
-        z= np.matmul(self.__W, X) + self.__b
+        z = np.matmul(self.__W, X) + self.__b
         self.__A = 1 / (1 + np.exp(-z))
         return self.__A
