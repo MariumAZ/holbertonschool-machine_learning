@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" the first neuron class file"""
+""" the first neuron class file Neuron"""
 
 
 import numpy as np
