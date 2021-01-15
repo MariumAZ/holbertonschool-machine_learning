@@ -31,3 +31,4 @@ class Neuron:
     def A(self):
         """ getter for activated output of neuron. initialized as 0"""
         return self.__A
+        
