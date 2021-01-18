@@ -135,7 +135,7 @@ class DeepNeuralNetwork:
 
         return self.evaluate(X, Y)        
     def save(self, filename):
-        """ save file function """
+        """ save file function  """
         if not(filename.endswith(".pkl")):
             filename = filename + ".pkl"
         """with open(filename, 'wb') as f:
@@ -156,4 +156,3 @@ class DeepNeuralNetwork:
             return c
         except FileNotFoundError:
             return None             
-            
