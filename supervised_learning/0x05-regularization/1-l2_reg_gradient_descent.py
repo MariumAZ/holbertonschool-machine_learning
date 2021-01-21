@@ -2,7 +2,7 @@
 import numpy as np
 """L2 regularization """
 def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
-    """ computing descent gradient using L2 reg"""
+    """ computing descent gradient using L2 regularization """
     m = Y.shape[1]
     dz = cache["A" + str(L)] - Y
     for i in range(L, 0, -1):
