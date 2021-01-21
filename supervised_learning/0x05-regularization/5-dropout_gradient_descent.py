@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Gradient Descent Dropout"""
 
-import tensorflow as tf
+import numpy as np
 
 def dropout_gradient_descent(Y, weights, cache, alpha, keep_prob, L):
     """
