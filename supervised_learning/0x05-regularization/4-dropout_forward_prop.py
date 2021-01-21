@@ -3,6 +3,7 @@
 
 import numpy as np
 
+
 def dropout_forward_prop(X, weights, L, keep_prob):
     """
     :param X: numpy.ndarray of shape (nx, m) containing
@@ -35,6 +36,5 @@ def dropout_forward_prop(X, weights, L, keep_prob):
             cache[A_key_forw] = np.tanh(Z)
             cache[D_key] = drop
             cache[A_key_forw] = (cache[A_key_forw] * cache[D_key]) / keep_prob
-
-
     return cache
+    
