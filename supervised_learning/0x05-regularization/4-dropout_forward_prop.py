@@ -26,7 +26,6 @@ def dropout_forward_prop(X, weights, L, keep_prob):
         D_key = "D{}".format(i + 1)
 
         Z = np.matmul(weights[W_key], cache[A_key_prev]) + weights[b_key]
-        #print(Z.shape)    
         drop = np.random.binomial(1, keep_prob, size=Z.shape)
 
         if i == L - 1:
@@ -34,9 +33,7 @@ def dropout_forward_prop(X, weights, L, keep_prob):
             cache[A_key_forw] = (t / np.sum(t, axis=0, keepdims=True))
         else:
             cache[A_key_forw] = np.tanh(Z)
-            print()
             cache[D_key] = drop
-            print(drop)
             cache[A_key_forw] = (cache[A_key_forw] * cache[D_key]) / keep_prob
 
 
