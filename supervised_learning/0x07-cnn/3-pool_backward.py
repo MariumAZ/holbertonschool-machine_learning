@@ -4,8 +4,6 @@ import numpy as np
 
 def pool_backward(dA, A_prev, kernel_shape, stride=(1, 1), mode='max'):
   m,h_new,w_new,c_new = dA.shape
-  print(dA.shape)
-  print(A_prev.shape)
   dA_prev = np.zeros(A_prev.shape)
   kh, kw = kernel_shape[0], kernel_shape[1]
   sh, sw = stride[0], stride[1]
