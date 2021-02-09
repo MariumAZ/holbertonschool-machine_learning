@@ -3,6 +3,7 @@ import tensorflow.keras as K
 
 def inception_block(A_prev, filters):
     
+    he_init = K.initializers.he_normal()
     F1, F3R, F3, F5R, F5, FPP = filters
     layer_1 = K.layers.Conv2D(F1,(1,1),padding='same',activation='relu')(A_prev)
     layer_2 = K.layers.Conv2D(F3R,(1,1),padding='same',activation='relu')(A_prev)
