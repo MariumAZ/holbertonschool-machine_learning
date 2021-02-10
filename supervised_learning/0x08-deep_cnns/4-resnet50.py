@@ -29,10 +29,15 @@ def resnet50():
 
     for i in range(2):
         layer = identity_block(layer, [512, 512, 2048])
+
+    
+    avg_pool = K.layers.AveragePooling2D(pool_size=7,
+                                         strides=None,
+                                         padding='same')(layer)    
     
     out = K.layers.Dense(1000,
                          activation='softmax',
-                         kernel_regularizer=K.regularizers.l2())(layer)
+                         kernel_regularizer=K.regularizers.l2())(avg_pool)
 
     model = K.models.Model(inputs=Input, outputs=out)
 
