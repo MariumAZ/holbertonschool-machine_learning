@@ -34,7 +34,7 @@ def resnet50():
                          activation='softmax',
                          kernel_regularizer=K.regularizers.l2())(layer)
 
-    model = K.models.Model(inputs=X, outputs=out)
+    model = K.models.Model(inputs=Input, outputs=out)
 
     return model    
 
