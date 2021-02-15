@@ -24,6 +24,6 @@ check = K.callbacks.ModelCheckpoint(filepath="cifar10.h5",
                                         monitor="val_acc",
                                         mode="max",
                                         save_best_only=True)  
-Model.fit(x_train,y_train,validation_data=(x_test,y_test),epochs=5,batch_size=32, verbose=1,callbacks=[check]) 
+Model.fit(x_train,y_train,validation_data=(x_test,y_test),epochs=1,batch_size=128, verbose=1,callbacks=[check]) 
 
 
