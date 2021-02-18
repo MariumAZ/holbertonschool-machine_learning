@@ -44,6 +44,7 @@ class Yolo():
             #bounding box coordinates(x,y):
             cx = np.indices((grid_h, grid_w, anchor_boxes))[1]
             cy = np.indices((grid_h, grid_w, anchor_boxes))[0]
+
             b_x = (self.sigmoid(t_x) + cx) / grid_w
             b_y = (self.sigmoid(t_y) + cy) / grid_h
 
@@ -73,7 +74,7 @@ class Yolo():
             boxes[i][..., 3] = y2 * img_h
             
             
-            return boxes,box_class_probs,box_confidences
+        return boxes,box_class_probs,box_confidences
 
 
 
