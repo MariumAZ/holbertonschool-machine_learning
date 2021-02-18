@@ -21,7 +21,9 @@ class Yolo():
         boxes = []
         box_confidences = []
         box_class_probs = []
-        for output in (outputs):
+
+        for (i,output) in enumerate(outputs):
+
             boxes.append(output[...,0:4])
             box_confidences.append(self.sigmoid(output[...,4:5]))
             box_class_probs.append(self.sigmoid(output[...,5:]))
@@ -30,14 +32,14 @@ class Yolo():
             grid_w = output.shape[1]
             anchor_boxes = output.shape[2]
 
-            network_output_coor = output[...,0:4]
-            network_output_prob = output[...,4:5]
-            network_output_classes = output[...,5:]
-            
-            t_x = network_output_coor[...,0]
-            t_y = network_output_coor[...,1]
-            t_w = network_output_coor[...,2]
-            t_h = network_output_coor[...,3]
+            #network_output_coor = output[...,0:4]
+            #network_output_prob = output[...,4:5]
+            #network_output_classes = output[...,5:]
+
+            t_x = output[...,0]
+            t_y = output[...,1]
+            t_w = output[...,2]
+            t_h = output[...,3]
            
             #bounding box coordinates(x,y):
             cx = np.indices((grid_h, grid_w, anchor_boxes))[1]
@@ -46,7 +48,7 @@ class Yolo():
             b_y = (self.sigmoid(t_y) + cy) / grid_h
 
             #extract anchors dimensions:
-            i = outputs.index(output)
+            #i = outputs.index(output)
             a_w = self.anchors[i,:,0]
             a_h = self.anchors[i,:,1]
 
