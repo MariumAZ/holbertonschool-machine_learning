@@ -25,35 +25,37 @@ class Yolo():
             boxes.append(output[...,0:4])
             box_confidences.append(self.sigmoid(output[...,4:5]))
             box_class_probs.append(self.sigmoid(output[...,5:]))
+
             grid_h = output.shape[0]
             grid_w = output.shape[1]
             anchor_boxes = output.shape[2]
+
             network_output_coor = output[...,0:4]
             network_output_prob = output[...,4:5]
             network_output_classes = output[...,5:]
+            
             t_x = network_output_coor[...,0]
             t_y = network_output_coor[...,1]
             t_w = network_output_coor[...,2]
             t_h = network_output_coor[...,3]
-            print("t_w shape: ",t_w.shape)
+           
             #bounding box coordinates(x,y):
             cx = np.indices((grid_h, grid_w, anchor_boxes))[1]
             cy = np.indices((grid_h, grid_w, anchor_boxes))[0]
             b_x = (self.sigmoid(t_x) + cx) / grid_w
             b_y = (self.sigmoid(t_y) + cy) / grid_h
+
             #extract anchors dimensions:
             i = outputs.index(output)
             a_w = self.anchors[i,:,0]
-            print("a_w shape : ",a_w.shape)
-           
             a_h = self.anchors[i,:,1]
+
             #bounding box coordinates(w,h):
             input_w = self.model.input.shape[1]
             input_h = self.model.input.shape[2]
 
             b_w = a_w * np.exp(t_w) / input_w
             b_h = a_h * np.exp(t_h) / input_h
-
 
             x1 = b_x - b_w / 2
             x2 = x1 + b_w
@@ -62,7 +64,6 @@ class Yolo():
 
             img_w = image_size[1]
             img_h = image_size[0]
-
 
             boxes[i][..., 0] = x1 * img_w
             boxes[i][..., 1] = y1 * img_h
