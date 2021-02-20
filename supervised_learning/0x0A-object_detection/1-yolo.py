@@ -64,7 +64,7 @@ class Yolo():
             bh = a_h * np.exp(t_h) 
 
              
-            # Normalizing
+            # Normalize
             bx = bx / grid_w
             by = by / grid_h
             bw = bw / self.model.input.shape[1]
