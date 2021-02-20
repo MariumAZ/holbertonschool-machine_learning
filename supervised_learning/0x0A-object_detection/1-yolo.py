@@ -84,7 +84,7 @@ class Yolo():
             boxes[i][..., 3] = y2 
             
             
-        return boxes, box_class_probs, box_confidences
+        return boxes, box_confidences, box_class_probs
 
             
             
