@@ -1,74 +1,83 @@
 #!/usr/bin/env python3
+
+
+""" contains Yolo class"""
+import tensorflow.keras as K
 import numpy as np
-import tensorflow.keras as K 
-"""
-Class to perform object detection
 
-"""
+
 class Yolo():
+    """Class that uses the Yolo v3 algorithm to perform object detection"""
+
     def __init__(self, model_path, classes_path, class_t, nms_t, anchors):
-        """
-        model_path : path to the Darknet keras model 
-
-        """
         self.model = K.models.load_model(model_path)
+        with open(classes_path, "r") as f:
+            r = f.read().split("\n")[:-1]
+        self.class_names = r
         self.class_t = class_t
-        self.anchors = anchors
         self.nms_t = nms_t
-        with open(classes_path,'r') as c:
-            self.class_names = [i.strip() for i in c]
-    def sigmoid(self,x):
-        return 1 / ( 1 + np.exp(-x))        
+        self.anchors = anchors
+
+    def sigmoid(self, x):
+        """sigmoid"""
+        return (1 / (1 + np.exp(-x)))
+
     def process_outputs(self, outputs, image_size):
-        #initialize empty lists:
+        """it processes output"""
+        inp_w = self.model.input.shape[1].value
+        inp_h = self.model.input.shape[2].value
         boxes = []
-        box_confidences = []
-        box_class_probs = []
-
+        box_c = []
+        box_c_p = []
+        img_w = image_size[1]
+        img_h = image_size[0]
         for i,output in enumerate(outputs):
+            boxes.append(output[..., 0:4])
+            box_c.append(self.sigmoid(output[..., 4:5]))
+            box_c_p.append(self.sigmoid(output[..., 5:]))
+            grid_h = boxes[i].shape[0]
+            grid_w = boxes[i].shape[1]
+            a = boxes[i].shape[2]
 
-            boxes.append(output[...,0:4]) #extract 4 coordinates (x,y,h,w)
-            box_confidences.append(self.sigmoid(output[...,4:5])) #extract probability
-            box_class_probs.append(self.sigmoid(output[...,5:]))  #extract prob classes 
-            grid_h = output.shape[0]   #grid height
-            grid_w = output.shape[1]   #grid weight
-            anchor_boxes = output.shape[2] #number of anchors on each cell
-            #network prediction outputs
-            t_x = output[...,0] 
-            t_y = output[...,1]
-            t_w = output[...,2]
-            t_h = output[...,3]
-            
-            cx = np.indices((grid_h, grid_w, anchor_boxes))[1]
-            cy = np.indices((grid_h, grid_w, anchor_boxes))[0]
-            #bounding box coordinates(x,y):
-            bx = self.sigmoid(t_x) + cx
-            by = self.sigmoid(t_y) + cy 
-            #extract anchors dimensions:
-            a_w = self.anchors[i,:,0]
-            a_h = self.anchors[i,:,1]
+            anchor_w = self.anchors[i, :, 0]
+            anchor_h = self.anchors[i, :, 1]
 
+            tx = boxes[i][..., 0]
+            ty = boxes[i][..., 1]
+            tw = boxes[i][..., 2]
+            th = boxes[i][..., 3]
 
-            bw = a_w * np.exp(t_w) 
-            bh = a_h * np.exp(t_h) 
+            cx = np.indices((grid_h, grid_w, a))[1]
+            cy = np.indices((grid_h, grid_w, a))[0]
 
-            # Normalizing
+            bx = self.sigmoid(tx) + cx 
+            by = self.sigmoid(ty) + cy
+
+            input_w = self.model.input.shape[1]
+            input_h = self.model.input.shape[2]
+
+            #bw = anchor_w * np.exp(tw) / input_w
+            #bh = anchor_h * np.exp(th) / input_h
+
+            #Normalizing:
             bx = bx / grid_w
             by = by / grid_h
-            bw = bw / self.model.input.shape[1]
-            bh = bh / self.model.input.shape[2]
-            # Coordinates
-            # Top left (x1, y1)
-            # Bottom right (x2, y2)
-            x1 = (bx - (bw / 2)) * image_size[1]
-            y1 = (by - (bh / 2)) * image_size[0]
-            x2 = (bx + (bw / 2)) * image_size[1]
-            y2 = (by + (bh / 2)) * image_size[0] 
-            boxes[i][..., 0] = x1 
-            boxes[i][..., 1] = y1 
-            boxes[i][..., 2] = x2
-            boxes[i][..., 3] = y2    
-        return boxes, box_confidences, box_class_probs
+            bw = bw / input_w
+            bh = bh / input_h
+
+
+
+            x1 = bx - bw / 2
+            x2 = x1 + bw
+            y1 = by - bh / 2
+            y2 = y1 + bh
+            
+            boxes[i][..., 0] = x1 * img_w
+            boxes[i][..., 1] = y1 * img_h
+            boxes[i][..., 2] = x2 * img_w
+            boxes[i][..., 3] = y2 * img_h
+        return boxes, box_c, box_c_p
+
         
    
     
