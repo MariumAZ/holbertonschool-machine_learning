@@ -31,7 +31,7 @@ class Yolo():
         box_c_p = []
         img_w = image_size[1]
         img_h = image_size[0]
-        for i,output in enumearte(outputs):
+        for i,output in enumerate(outputs):
             boxes.append(output[..., 0:4])
             box_c.append(self.sigmoid(output[..., 4:5]))
             box_c_p.append(self.sigmoid(output[..., 5:]))
