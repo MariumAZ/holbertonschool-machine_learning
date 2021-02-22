@@ -29,13 +29,15 @@ class Yolo():
         boxes = []
         box_c = []
         box_c_p = []
-        for output in outputs:
+        img_w = image_size[1]
+        img_h = image_size[0]
+        for i,output in enumerate(outputs):
             boxes.append(output[..., 0:4])
             box_c.append(self.sigmoid(output[..., 4:5]))
             box_c_p.append(self.sigmoid(output[..., 5:]))
         img_w = image_size[1]
         img_h = image_size[0]
-        for i in range(len(outputs)):
+        #for i in range(len(outputs)):
             grid_h = boxes[i].shape[0]
             grid_w = boxes[i].shape[1]
             a = boxes[i].shape[2]
