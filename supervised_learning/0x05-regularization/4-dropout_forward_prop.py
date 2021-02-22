@@ -37,4 +37,4 @@ def dropout_forward_prop(X, weights, L, keep_prob):
             cache[D_key] = drop
             cache[A_key_forw] = (cache[A_key_forw] * cache[D_key]) / keep_prob
     return cache
-    
+      
