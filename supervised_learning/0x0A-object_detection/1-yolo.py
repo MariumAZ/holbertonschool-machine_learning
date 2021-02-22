@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 import numpy as np
 import tensorflow.keras as K 
-
-#!/usr/bin/env python3
-import numpy as np
-import tensorflow.keras as K 
 """
 Class to perform object detection
 
@@ -51,6 +47,8 @@ class Yolo():
             #extract anchors dimensions:
             a_w = self.anchors[i,:,0]
             a_h = self.anchors[i,:,1]
+
+
             bw = a_w * np.exp(t_w) 
             bh = a_h * np.exp(t_h) 
 
