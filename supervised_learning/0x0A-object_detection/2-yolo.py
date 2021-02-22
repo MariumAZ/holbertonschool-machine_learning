@@ -36,15 +36,30 @@ class Yolo():
             t_w = output[...,2]
             t_h = output[...,3]
             
-            cx = np.indices((grid_h, grid_w, anchor_boxes))[1]
-            cy = np.indices((grid_h, grid_w, anchor_boxes))[0]
+            #cx = np.indices((grid_h, grid_w, anchor_boxes))[1]
+            #cy = np.indices((grid_h, grid_w, anchor_boxes))[0]
             
+
+            pw_total = self.anchors[:, :, 0]
+            a_w = np.tile(pw_total[i], grid_w)
+            a_w = pw.reshape(grid_w, 1, len(pw_total[i]))
+            ph_total = self.anchors[:, :, 1]
+            a_h = np.tile(ph_total[i], grid_h)
+            a_h = ph.reshape(grid_h, 1, len(ph_total[i]))
+
+            # Corners of the grid
+            cx = np.tile(np.arange(grid_w), grid_h)
+            cx = cx.reshape(grid_w, grid_w, 1)
+            cy = np.tile(np.arange(grid_w), grid_h)
+            cy = cy.reshape(grid_h, grid_h).T
+            cy = cy.reshape(grid_h, grid_h, 1)
+
             #bounding box coordinates(x,y):
             bx = self.sigmoid(t_x) + cx
             by = self.sigmoid(t_y) + cy 
             #extract anchors dimensions:
-            a_w = self.anchors[i,:,0]
-            a_h = self.anchors[i,:,1]
+            #a_w = self.anchors[i,:,0]
+            #a_h = self.anchors[i,:,1]
             bw = a_w * np.exp(t_w) 
             bh = a_h * np.exp(t_h) 
            
