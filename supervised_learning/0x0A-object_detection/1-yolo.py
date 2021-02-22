@@ -5,7 +5,10 @@ import tensorflow.keras as K
 #!/usr/bin/env python3
 import numpy as np
 import tensorflow.keras as K 
+"""
+Class to perform object detection
 
+"""
 class Yolo():
     def __init__(self, model_path, classes_path, class_t, nms_t, anchors):
         """
@@ -42,10 +45,6 @@ class Yolo():
             
             cx = np.indices((grid_h, grid_w, anchor_boxes))[1]
             cy = np.indices((grid_h, grid_w, anchor_boxes))[0]
-            
-           
-
-
             #bounding box coordinates(x,y):
             bx = self.sigmoid(t_x) + cx
             by = self.sigmoid(t_y) + cy 
@@ -54,7 +53,6 @@ class Yolo():
             a_h = self.anchors[i,:,1]
             bw = a_w * np.exp(t_w) 
             bh = a_h * np.exp(t_h) 
-            print(bx,by,bw,bh)
 
             # Normalizing
             bx = bx / grid_w
@@ -83,7 +81,6 @@ class Yolo():
     
    
 
-               
             
             
 
