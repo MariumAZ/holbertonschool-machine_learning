@@ -53,8 +53,8 @@ class Yolo():
             bx = self.sigmoid(tx) + cx 
             by = self.sigmoid(ty) + cy
 
-            input_w = self.model.input.shape[1]
-            input_h = self.model.input.shape[2]
+            input_w = self.model.input.shape[1].value
+            input_h = self.model.input.shape[2].value
 
             #bw = anchor_w * np.exp(tw) / input_w
             #bh = anchor_h * np.exp(th) / input_h
@@ -71,7 +71,7 @@ class Yolo():
             x2 = x1 + bw
             y1 = by - bh / 2
             y2 = y1 + bh
-            
+
             boxes[i][..., 0] = x1 * img_w
             boxes[i][..., 1] = y1 * img_h
             boxes[i][..., 2] = x2 * img_w
