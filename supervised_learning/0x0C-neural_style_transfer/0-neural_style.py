@@ -42,7 +42,7 @@ class NST():
             h_new = int(h * w_new / w)
 
 
-        image = tf.expand_dim(tf.image.resize_bicubic(image,[h_new, w_new]),axis=0)
+        image = tf.expand_dims(tf.image.resize_bicubic(image,[h_new, w_new]),axis=0)
         image = image / 255.0
         image = tf.clip_by_value(image,0,1)
         return image
