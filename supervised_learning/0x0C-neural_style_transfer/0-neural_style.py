@@ -12,8 +12,7 @@ class NST():
     content_layer = 'block5_conv2'
 
     def __init__(self,style_image, content_image, alpha=1e4, beta=1):
-        self.style_image = style_image
-        self.content_image = content_image
+        
         self.alpha = alpha
         self.beta = beta
        
@@ -25,6 +24,9 @@ class NST():
             raise TypeError("alpha must be a non-negative number")
         if (self.beta < 0):
             raise TypeError("beta must be a non-negative number")   
+
+        self.style_image = self.scale_image(style_image)
+        self.content_image = self.scale_image(content_image)    
 
     @staticmethod
     def scale_image(image):
@@ -38,9 +40,9 @@ class NST():
         else:
             w_new = 512
             h_new = int(h * w_new / w)
-        
-            
-        image = tf.expand_dim(tf.image.resize(images, (h_new,w_new) , method=ResizeMethod.bicubic),axis=0)
+
+
+        image = tf.expand_dim(tf.image.resize_bicubic(image,[h_new, w_new]),axis=0)
         image = image / 255.0
         image = tf.clip_by_value(image,0,1)
         return image
