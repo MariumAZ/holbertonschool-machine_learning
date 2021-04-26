@@ -4,8 +4,8 @@ import numpy as np
 
 class RNNCell:
     def __init__(self, i, h, o):
-        self.Wh = np.random.randn(h+i,h)
-        self.Wy = np.random.randn(h,o)
+        self.Wh = np.random.normal(size = (h+i,h))
+        self.Wy = np.random.normal(size = (h,o))
         self.bh = 0
         self.by = 0
 
