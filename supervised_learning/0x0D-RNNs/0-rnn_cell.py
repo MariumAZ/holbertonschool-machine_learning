@@ -1,5 +1,9 @@
 #!/usr/bin/env python3`
 
+"""
+Performs forward propagation for one time step 
+
+"""
 import numpy as np 
 
 class RNNCell:
