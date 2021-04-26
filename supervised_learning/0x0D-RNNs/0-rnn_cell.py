@@ -1,13 +1,13 @@
-#! /usr/bin/python3
+#!/usr/bin/env python3`
 
 import numpy as np 
 
 class RNNCell:
     def __init__(self, i, h, o):
-        self.Wh = np.random.rand(h+i,h)
-        self.Wy = np.random.rand(h,o)
-        self.bh = np.zeros((1, h))
-        self.by = np.zeros((1, o))
+        self.Wh = np.random.randn(h+i,h)
+        self.Wy = np.random.randn(h,o)
+        self.bh = 0
+        self.by = 0
 
         
     def softmax(self,x):
