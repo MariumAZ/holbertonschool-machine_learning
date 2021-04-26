@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import numpy as np
-RNNCell = __import__('0-rnn_cell').RNNCell
+
 
 def rnn(rnn_cell, X, h_0):
     H = [h_0]
