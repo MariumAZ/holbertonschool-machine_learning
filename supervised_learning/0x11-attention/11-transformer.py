@@ -1,29 +1,19 @@
 #!/usr/bin/env python3
 
 import tensorflow as tf
-positional_encoding = __import__('4-positional_encoding').positional_encoding
-DecoderBlock = __import__('8-transformer_decoder_block').DecoderBlock
+Encoder = __import__('9-transformer_encoder').Encoder
+Decoder = __import__('10-transformer_decoder').Decoder
 
-class Decoder(tf.keras.layers.Layer):
-    def __init__(self, N, dm, h, hidden, target_vocab, max_seq_len, drop_rate=0.1):
-        super(Decoder, self).__init__()
-
-        self.dm = dm
-        self.N = N
+class Transformer(tf.keras.Model):
+    def __init__(self, N, dm, h, hidden, input_vocab, 
+                 target_vocab, max_seq_input, max_seq_target, drop_rate=0.1):
+        super(Transformer, self).__init__()
+        self.encoder = Encoder(N, dm, h, hidden, input_vocab, max_seq_input, drop_rate)
+        self.decoder = Decoder(N, dm, h, hidden, target_vocab, max_seq_target, drop_rate)
+        self.final_layer = tf.keras.layers.Dense(target_vocab)
         
-        self.embedding = tf.keras.layers.Embedding(target_vocab, dm)
-        self.positional_encoding = positional_encoding(max_seq_len, dm)
-        
-        self.blocks = [DecoderBlock(dm, h, hidden, drop_rate) for _ in range(N)]
-        self.dropout = tf.keras.layers.Dropout(drop_rate)
-
-    def call(self, x, encoder_output, training, look_ahead_mask, padding_mask):
-        seq_len = x.shape.as_list()[1]
-        x = self.embedding(x)
-        x *= tf.math.sqrt(tf.cast(self.dm, tf.float32))
-        x += tf.convert_to_tensor(self.positional_encoding[:seq_len].reshape((1, seq_len, -1)), dtype=tf.float32)
-        x = self.dropout(x, training=training)
-        for i in range(self.N):
-            x = self.blocks[i](x, encoder_output, training,
-                               look_ahead_mask, padding_mask)
-        return x
+    def call(self, inputs, target, training, encoder_mask, look_ahead_mask, decoder_mask):
+        encoder_output = self.encoder(inputs, training, encoder_mask)
+        decoder_output = self.decoder(target, encoder_output, training, look_ahead_mask, decoder_mask)
+        output = self.final_layer(decoder_output)
+        return output
