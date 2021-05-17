@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 
+
+
+"""contains EncoderBlock class"""  
+
 import tensorflow as tf
 Encoder = __import__('9-transformer_encoder').Encoder
 Decoder = __import__('10-transformer_decoder').Decoder
 
 class Transformer(tf.keras.Model):
+    """ class to create a transformer """
     def __init__(self, N, dm, h, hidden, input_vocab, 
                  target_vocab, max_seq_input, max_seq_target, drop_rate=0.1):
         super(Transformer, self).__init__()
