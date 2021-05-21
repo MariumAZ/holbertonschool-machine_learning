@@ -44,14 +44,11 @@ class RNNDecoder(tf.keras.layers.Layer):
             F: a Dense layer with vocab units
         """
         super(RNNDecoder, self).__init__()
-        self.embedding = tf.keras.layers.Embedding(input_dim=vocab,
-                                                   output_dim=embedding)
-        self.gru = tf.keras.layers.GRU(units=units,
-                                       return_state=True,
-                                       return_sequences=True,
-                                       recurrent_initializer="glorot_uniform")
+        self.embedding = tf.keras.layers.Embedding(input_dim=vocab,output_dim=embedding)
+        self.gru = tf.keras.layers.GRU(units=units,return_state=True,
+                                       return_sequences=True, recurrent_initializer="glorot_uniform")
         self.F = tf.keras.layers.Dense(units=vocab)
-        #self.units = units
+        self.attention = SelfAttention(units)
     def call(self, x, s_prev, hidden_states):
         """
         Returns the output word as a one hot vector and
@@ -72,10 +69,9 @@ class RNNDecoder(tf.keras.layers.Layer):
                 s [tensor of shape (batch, units)]:
                     contains the new decoder hidden state
         """
-        units = s_prev.get_shape().as_list()[1]
-        attention = SelfAttention(units)
+       
         x = self.embedding(x)
-        context, weights = attention(s_prev, hidden_states)
+        context, weights = self.attention(s_prev, hidden_states)
         context = tf.expand_dims(context, 1)
         x = tf.concat([context, x], axis=-1)
         y, s = self.gru(x)
