@@ -15,6 +15,6 @@ class Dataset:
 
     def tokenize_dataset(self, data):
         """create tokenizers"""
-        pt = tfds.features.text.SubwordTextEncoder.build_from_corpus((pt.numpy() for pt, en in data), 2**15)
-        en = tfds.features.text.SubwordTextEncoder.build_from_corpus((en.numpy() for pt, en in data), 2**15)
+        pt = tfds.deprecated.text.SubwordTextEncoder.build_from_corpus((pt.numpy() for pt, en in data), 2**15)
+        en = tfds.deprecated.text.SubwordTextEncoder.build_from_corpus((en.numpy() for pt, en in data), 2**15)
         return pt, en
