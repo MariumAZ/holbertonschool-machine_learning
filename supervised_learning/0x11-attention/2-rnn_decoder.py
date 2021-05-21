@@ -11,38 +11,8 @@ SelfAttention = __import__('1-self_attention').SelfAttention
 
 
 class RNNDecoder(tf.keras.layers.Layer):
-    """
-    Class to decode for machine translation
-    class constructor:
-        def __init__(self, vocab, embedding, units, batch)
-    public instance attribute:
-        embedding: a keras Enbedding layer that
-            converts words from the vocabulary into an embedding vector
-        gru: a keras GRU layer with units number of units
-        F: a Dense layer with vocab units
-    public instance methods:
-        def call(self, x, s_prev, hidden_states):
-            returns the output word as one hot vector and
-                the new decoder hidden state
-    """
+
     def __init__(self, vocab, embedding, units, batch):
-        """
-        Class constructor
-        parameters:
-            vocab [int]:
-                represents the size of the output vocabulary
-            embedding [int]:
-                represents the dimensionality of the embedding vector
-            units [int]:
-                represents the number of hidden units in the RNN cell
-            batch [int]:
-                represents the batch size
-        sets the public instance attributes:
-            embedding: a keras Enbedding layer that
-                converts words from the vocabulary into an embedding vector
-            gru: a keras GRU layer with units number of units
-            F: a Dense layer with vocab units
-        """
         super(RNNDecoder, self).__init__()
         self.embedding = tf.keras.layers.Embedding(input_dim=vocab,output_dim=embedding)
         self.gru = tf.keras.layers.GRU(units,return_state=True,
