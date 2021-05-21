@@ -45,9 +45,9 @@ class RNNDecoder(tf.keras.layers.Layer):
         """
         super(RNNDecoder, self).__init__()
         self.embedding = tf.keras.layers.Embedding(input_dim=vocab,output_dim=embedding)
-        self.gru = tf.keras.layers.GRU(units=units,return_state=True,
+        self.gru = tf.keras.layers.GRU(units,return_state=True,
                                        return_sequences=True, recurrent_initializer="glorot_uniform")
-        self.F = tf.keras.layers.Dense(units=vocab)
+        self.F = tf.keras.layers.Dense(vocab)
         self.attention = SelfAttention(units)
     def call(self, x, s_prev, hidden_states):
         """
