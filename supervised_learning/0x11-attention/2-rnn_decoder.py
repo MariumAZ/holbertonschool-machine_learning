@@ -43,18 +43,6 @@ class RNNDecoder(tf.keras.layers.Layer):
             gru: a keras GRU layer with units number of units
             F: a Dense layer with vocab units
         """
-        if type(vocab) is not int:
-            raise TypeError(
-                "vocab must be int representing the size of output vocabulary")
-        if type(embedding) is not int:
-            raise TypeError(
-                "embedding must be int representing dimensionality of vector")
-        if type(units) is not int:
-            raise TypeError(
-                "units must be int representing the number of hidden units")
-        if type(batch) is not int:
-            raise TypeError(
-                "batch must be int representing the batch size")
         super(RNNDecoder, self).__init__()
         self.embedding = tf.keras.layers.Embedding(input_dim=vocab,
                                                    output_dim=embedding)
@@ -84,8 +72,7 @@ class RNNDecoder(tf.keras.layers.Layer):
                 s [tensor of shape (batch, units)]:
                     contains the new decoder hidden state
         """
-        #units = s_prev.get_shape().as_list()[1]
-        units = tf.shape(s_prev)[1]
+        units = s_prev.get_shape().as_list()[1]
         attention = SelfAttention(units)
         x = self.embedding(x)
         context, weights = attention(s_prev, hidden_states)
