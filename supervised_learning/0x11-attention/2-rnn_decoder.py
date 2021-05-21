@@ -63,7 +63,7 @@ class RNNDecoder(tf.keras.layers.Layer):
                                        return_sequences=True,
                                        recurrent_initializer="glorot_uniform")
         self.F = tf.keras.layers.Dense(units=vocab)
-        self.units units
+        self.units = units
     def call(self, x, s_prev, hidden_states):
         """
         Returns the output word as a one hot vector and
