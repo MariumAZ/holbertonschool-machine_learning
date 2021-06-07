@@ -4,6 +4,7 @@
 collects apis
 """
 import requests
+from requests.api import request
 
 def availableShips(passengerCount):
     """
@@ -12,19 +13,24 @@ def availableShips(passengerCount):
     number of passengers using Swapi API
 
     """
-    star_req  = requests.get("https://swapi-api.hbtn.io/api/starships/")
-    #print(type(star_req))
-    star_json = star_req.json()
-    for k, v in star_json.items():
-        if k =="results":
-            for d in v :
-                #print(d)
-                #print(d["passengers"])
-                try:
-                    if int(d["passengers"]) >= passengerCount :
-                        print(d["name"])
-                except:
-                    print([])        
+    names = []
+    url = "https://swapi-api.hbtn.io/api/starships/"
+    while True:
+        star_json = requests.get(url).json()
+        for k, v in star_json.items():
+            if k =="results":
+                for d in v :
+                    try:
+                        if int(d["passengers"].replace(',', '')) >= passengerCount :
+                            names.append(d["name"])
+                    except ValueError:
+                            continue
+        url = requests.get(url).json()['next']
+        print(url)
+        if url is None:
+            break
+    return names                
+                    
 
 
 
