@@ -6,7 +6,10 @@ collect apis
 """
 def availableShips(passengerCount):
     """
-    function to collect apis
+
+    Returns the list of ships that can hold a given
+    number of passengers using Swapi API
+
     """
     star_req  = requests.get("https://swapi-api.hbtn.io/api/starships/")
     #print(type(star_req))
