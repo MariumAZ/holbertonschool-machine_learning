@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-import json
+
+"""
+collects apis
+"""
 import requests
-"""
-collect apis
-"""
+
 def availableShips(passengerCount):
     """
 
