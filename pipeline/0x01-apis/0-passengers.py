@@ -26,7 +26,6 @@ def availableShips(passengerCount):
                     except ValueError:
                             continue
         url = requests.get(url).json()['next']
-        print(url)
         if url is None:
             break
     return names                
