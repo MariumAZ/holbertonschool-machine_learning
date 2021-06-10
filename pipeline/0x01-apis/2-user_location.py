@@ -1,10 +1,10 @@
 #!usr/bin/env python3
+"""
+a script that prints the location of a specific user:
 
+"""
 import requests
 import sys
-import os
-
-
 
 if __name__ == '__main__': 
  url = sys.argv[1]
