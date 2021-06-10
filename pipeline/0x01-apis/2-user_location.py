@@ -1,10 +1,11 @@
-#!usr/bin/env python3
+#!/usr/bin/env python3
 """
-a script that prints the location of a specific user:
+script that prints the location of a specific user
 
 """
 import requests
 import sys
+import time
 
 if __name__ == '__main__': 
  url = sys.argv[1]
@@ -13,15 +14,17 @@ if __name__ == '__main__':
         req = requests.get(url)
         code = req.status_code
         if code == 403:
-            print("Reset in X min")
-        if code == 200:
-                req_json = req.json()
-                name = req_json['login']
-                if name is None:
-                    print("Not Found")   
-                else:   
-                    location = req_json['location']
-                    print(location)
+            limit = req.headers['X-Ratelimit-Reset']
+            limit = int((int(limit) - int(time.time())) / 60)
+            print("Reset in {} min".format(limit))
+        elif code == 200:
+            try:
+                location = req.json()['location']
+                print(location)
+            except KeyError:
+                print("Not Found")    
+        else:
+            print("Not Found")               
     except ValueError:
         print("Please provide args")
           
