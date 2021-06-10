@@ -8,6 +8,7 @@ import sys
 import time
 
 if __name__ == '__main__': 
+    #https://www.dataquest.io/blog/python-api-tutorial/
  url = sys.argv[1]
  if url != '':
     try:
@@ -22,9 +23,9 @@ if __name__ == '__main__':
                 location = req.json()['location']
                 print(location)
             except KeyError:
-                print("Not Found")    
+                print("Not found")    
         else:
-            print("Not Found")               
+            print("Not found")               
     except ValueError:
         print("Please provide args")
           
