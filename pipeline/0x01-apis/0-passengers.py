@@ -18,7 +18,7 @@ def availableShips(passengerCount):
     while True:
         star_json = requests.get(url).json()
         for k, v in star_json.items():
-            if k =="results":
+            if k == "results":
                 for d in v :
                     try:
                         if int(d["passengers"].replace(',', '')) >= passengerCount :
