@@ -1,7 +1,3 @@
--- temperatures 
---select rows from temperatures
-
-SELECT AVG(value) 
-FROM temperatures 
-group by city;
+--select rows
+SELECT city, AVG(value) as avg_temp FROM temperatures group by city order avg_temp DESC;
 
